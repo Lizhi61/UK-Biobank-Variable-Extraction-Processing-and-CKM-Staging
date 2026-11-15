@@ -48,7 +48,7 @@ ETHNICITY.update(dict.fromkeys(
 BP_FIELDS = {"sbp": (4080, 93), "dbp": (4079, 94)}
 
 CONVERSIONS = (
-    ("hba1c_pct", "hba1c_mmol_mol", 0.09148, 2.15),
+    ("hba1c_pct", "hba1c_mmol_mol", 0.0915, 2.15),
     ("tg_mg_dl", "tg_mmol_l", 88.57, 0),
     ("hdl_mg_dl", "hdl_mmol_l", 38.67, 0),
     ("tc_mg_dl", "tc_mmol_l", 38.67, 0),
