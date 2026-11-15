@@ -214,7 +214,7 @@ def write_baseline():
             reader = csv.DictReader(source, strict=True)
 
             if not reader.fieldnames:
-                raise ValueError("输入文件为空或无表头")
+                raise ValueError("Input file is empty or has no header")
 
             header = [normalize_column(c) for c in reader.fieldnames]
             duplicates = [
@@ -223,7 +223,7 @@ def write_baseline():
 
             if "" in header or duplicates:
                 raise ValueError(
-                    f"空表头或重复/别名冲突列: {duplicates}"
+                    f"Empty column names or duplicate columns after normalization: {duplicates}"
                 )
 
             reader.fieldnames = header
@@ -239,7 +239,7 @@ def write_baseline():
             absent = sorted(required - set(header))
             if absent:
                 raise ValueError(
-                    f"缺少必需列（或列名格式不支持）: {absent}"
+                    f"Missing required columns or unsupported column name format: {absent}"
                 )
 
             absent_flags = [
@@ -249,8 +249,8 @@ def write_baseline():
             ]
             if absent_flags:
                 print(
-                    "提示：以下标志列未提供，不能完整核验"
-                    f"报告性/检出限: {absent_flags}"
+                    "Note: the following flag columns are unavailable; full "
+                    f"reportability/detection-limit verification is not possible: {absent_flags}"
                 )
 
             array_indices = {}
@@ -280,7 +280,7 @@ def write_baseline():
                     or array_indices[manual_field]
                 ):
                     raise ValueError(
-                        f"缺少 {name} 的全部基线血压列"
+                        f"All baseline {name} blood pressure columns are missing"
                     )
 
                 columns.extend(
@@ -320,21 +320,21 @@ def write_baseline():
                         value is None for value in row.values()
                     ):
                         raise ValueError(
-                            f"CSV第{reader.line_num}行的列数"
-                            "与表头不一致"
+                            f"Column count on CSV line {reader.line_num} "
+                            "does not match the header"
                         )
 
                     eid = text(row["eid"])
 
                     if not re.fullmatch(r"[0-9]+", eid):
                         raise ValueError(
-                            f"CSV第{reader.line_num}行的"
-                            "eid为空或格式非法"
+                            f"CSV line {reader.line_num}: "
+                            "eid is missing or invalid"
                         )
 
                     if eid in seen_ids:
                         raise ValueError(
-                            f"CSV第{reader.line_num}行的eid重复"
+                            f"CSV line {reader.line_num}: duplicate eid"
                         )
                     seen_ids.add(eid)
 
@@ -349,7 +349,7 @@ def write_baseline():
                             r"[0-9]{4}-[0-9]{2}-[0-9]{2}",
                             visit_date,
                         ):
-                            raise ValueError("日期必须为YYYY-MM-DD")
+                            raise ValueError("Date must use YYYY-MM-DD format")
 
                         baseline_date = date.fromisoformat(
                             visit_date
